@@ -32,7 +32,6 @@ export default function signup() {
             }
         })
         console.log(otp)
-       // navigate('/signin');
     }
 
     const navigate = useNavigate();

@@ -3,6 +3,7 @@ import { Paper, TextField } from '@mui/material';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { PiPlusBold } from 'react-icons/pi';
 import { BiEdit } from 'react-icons/bi';
+import { RiDeleteBinLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import Communitycard from './communityCard';
 import CreateCommunity from './createCommunity';
@@ -62,14 +63,17 @@ export default class  community extends Component {
                             <div className='d-flex ' >
                                 <p className='ms-auto text-primary' style={{fontSize:25}}>Search</p>
                                 <div className='icon d-flex' style={{marginTop:-10}}>
-                                    <Paper className='ms-3'>
+                                    {/* <Paper className='ms-3'>
                                         <AiOutlineSearch className='icon26'/>
-                                    </Paper>
-                                    <Paper className='ms-3' >
+                                    </Paper> */}
+                                    <Paper className='ms-4' >
                                         <PiPlusBold className='icon26' onClick={(e)=>this.showModel(e)}/>
                                     </Paper>
-                                    <Paper className='ms-3'>
+                                    <Paper className='ms-4'>
                                         <BiEdit className='icon26'/>
+                                    </Paper>
+                                    <Paper className='ms-4'>
+                                        <RiDeleteBinLine className='icon26'/>
                                     </Paper>
                                 </div>
                             </div>

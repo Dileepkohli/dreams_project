@@ -25,26 +25,27 @@ export default class mydreamCard extends Component {
 
   render() {
     return (
-      <div className='p-3' >
-       
-            <Paper className='card ms-2' elevation={3}  style={{marginLeft:-20,borderRadius:20}}>
-              
-              <div className='d-flex' style={{marginTop:10}}>
-                <div className='p-2 ' style={{marginLeft:15}} >
-                    {
-                      <img className='image'    width={140} height={140} style={{borderRadius:70,}} />
-                    }
-                </div>
-                  <div className='p-2 pt-4 d-flex' style={{marginLeft:35,marginTop:30}}>
-                    <BiSolidQuoteRight className='icon27'/>
-                    <h2 style={{color:'blue'}}>{this.props.EachItemData.card_title}</h2>
-                   <BiSolidQuoteRight className='icon27'/>
+      <div className='p-3 ' >
+        
+            <Paper className='card ms-2 ' elevation={3}  style={{marginLeft:-20,borderRadius:20,width:570}}>
+              <div className='flex-wrap'>
+                <div className='d-flex' style={{marginTop:10}}>
+                  <div className='p-2 ' style={{marginLeft:15}} >
+                      {
+                        <img className='image'    width={140} height={140} style={{borderRadius:70,}} />
+                      }
                   </div>
-                 
-              </div>
-              <div className='p-4' style={{marginTop:-10,color:'CaptionText'}}>
-                <p style={{textAlign:'justify',marginLeft:0,width:520}}>{this.props.EachItemData.card_data}</p>
-                <p style={{marginTop:-20}}></p>
+                    <div className='p-2 pt-4 d-flex' style={{marginLeft:35,marginTop:30}}>
+                      <BiSolidQuoteRight className='icon27'/>
+                      <h2 style={{color:'blue'}}>{this.props.EachItemData.card_title}</h2>
+                    <BiSolidQuoteRight className='icon27'/>
+                    </div>
+                  
+                </div>
+                <div className='p-4 flex-wrap' style={{marginTop:-10,color:'CaptionText'}}>
+                  <p style={{textAlign:'justify',marginLeft:0}}>{this.props.EachItemData.card_data}</p>
+                  <p style={{marginTop:-20}}></p>
+                </div>
               </div>
             </Paper>
 

@@ -66,7 +66,7 @@ export default function infodetails () {
                     <div className='justify-content-center align-items-center p-4'><p className='text-white' style={{marginLeft:240}}>Let's start your dream</p> <p className='text-white' style={{marginLeft:260}}>in a few steps!</p></div>
             </div>
         </div>
-        <div className='col-md-8 container p-5 '>
+        <div className='col-md-8 container p-3 '>
         <div align='end' style={{marginRight:-10}}> <Link to='/myaccount'><img src={require('./Images/home.png')} width={50} height={50}/></Link></div><br/>
             <div className='p-3'>
             <Paper elevation={12} className='p-4 ' style={{marginLeft:10}} >

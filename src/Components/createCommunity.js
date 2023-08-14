@@ -7,13 +7,7 @@ export default class createCommunity extends Component {
   constructor(props){
     super(props)
     this.state = {
-      cardtitle:this.props.eachData && this.props.eachData.cardTitle ? this.props.eachData.cardTitle: '',
-      cardDate:this.props.eachData && this.props.eachData.cardDate ? this.props.eachData.cardDate:'',
-      orderId:this.props.eachData && this.props.eachData.orderId ? this.props.eachData.orderId:'',
-      cardData:this.props.eachData && this.props.eachData.cardData ? this.props.eachData.cardData:'',
-      productId: this.props.eachData &&  this.props.eachData.productId ? this.props.eachData.productId : "",
-      ProductImage:this.props.eachData&& this.props.eachData.ProductImage ? this.props.eachData.ProductImage:''
-      
+      message:''
     }
   }
 
@@ -26,12 +20,12 @@ export default class createCommunity extends Component {
 
   submitCardForm = (e) =>{
     e.preventDefault()
-    console.log(this.props.setitemData);
+    console.log(this.state);
     this.props.setitemData([this.state]);
    
     if(this.props.type && this.props.type === 'create'){
 
-      var msg = "Are you sure, you want to save the product?"
+      var msg = "Are you sure, you want to save the testimonial?"
       
     }else{
 
@@ -58,8 +52,10 @@ export default class createCommunity extends Component {
   }
   
   handleChange = (e) => {
-    if (["card_image", "card_title", "card_date", "card_orderId"].includes(e.target.name)){
+    const message =  e.target.value;
+    if (["card_image", "card_title", "card_date", "card_orderId",].includes(e.target.name)){
       this.setState({[e.target.name]: (e.target.value)})
+      this.setState({message})
     }else{
       this.setState({[e.target.name]:e.target.value})
     }
@@ -70,7 +66,7 @@ export default class createCommunity extends Component {
 
   render() {
 
-    const {communityData} = this.state;
+    const {communityData,message} = this.state;
     
     return (
 
@@ -80,16 +76,14 @@ export default class createCommunity extends Component {
 
               <Modal  show={this.props.show} onHide={(e)=>this.onClose(e)} >
               <Modal.Header closeButton key="a3">
-                  <Modal.Title>Update Card</Modal.Title>
+                  <Modal.Title>Update Community</Modal.Title>
               </Modal.Header>
                 <Modal.Body key="a1 " className=''>
-                      <Paper className='p-5 ' elevation={3}>
-                        <TextField  variant="standard" placeholder='Image path' fullWidth  onChange={(e) => this.handleChange(e,'')} /><br/><br/>
-                        <TextField id="standard-basic card_title" placeholder='Title' fullWidth variant="standard" type='text'   name='card_title'  onChange={(e) => this.handleChange(e,'')} /><br/><br/>
-                        <TextField id="standard-basic card_date" placeholder='Date' fullWidth variant="standard" type='date'  name='card_date'  onChange={(e) => this.handleChange(e,'')}/><br/><br/>
-                        <TextField id="standard-basic orderId" placeholder='Order Id:' fullWidth variant="standard"  type='text'  name='order_id'  onChange={(e) => this.handleChange(e,'')} /><br/><br/>
-                        <TextField id="standard-basic card_data" placeholder='Your Toughts'  fullWidth variant="standard" type='text'  name='card_data'  onChange={(e) => this.handleChange(e,'')}/>
-                      </Paper>
+                <Paper className='p-4' elevation={12}>  
+                          <TextField id="standard-outlined" placeholder='Title '  variant="outlined" type='text'   name='card_title'  onChange={(e) => this.handleChange(e,'')} fullWidth /><br/><br/>
+                          <TextField type='file' name='card_image' fullWidth /><br/><br/>
+                          <input className='textfield p-2' placeholder='Your Toughts'   variant="outlined" type='text'  name='card_data'  onChange={(e) => this.handleChange(e,'')} fullWidth/>
+                        </Paper>
                 </Modal.Body>
                   <Modal.Footer key="a2">
                     <Button className="bl-btn2-ol" variant="secondary" onClick={(e)=>this.onClose(e)}>
@@ -106,7 +100,7 @@ export default class createCommunity extends Component {
              
                 <Modal  show={this.props.show} onHide={(e)=>this.onClose(e)}>
               <Modal.Header closeButton key="b3">
-                  <Modal.Title>Delete card</Modal.Title>
+                  <Modal.Title>Delete Community</Modal.Title>
               </Modal.Header>
                 
                   <Modal.Footer key="b2">
@@ -123,21 +117,21 @@ export default class createCommunity extends Component {
            : [
                 <Modal  show={this.props.show} centered onHide={(e)=>this.onClose(e)} >
                 <Modal.Header closeButton key="c3">
-                    <Modal.Title>Create card</Modal.Title>
+                    <Modal.Title>Create Community</Modal.Title>
                 </Modal.Header>
-                  <Modal.Body key="c1">
-                        <Paper className='p-5 '>
-                          <TextField  variant="standard" placeholder='Image path' fullWidth  onChange={(e) => this.handleChange(e,'')} /><br/><br/>
-                          <TextField id="standard-basic card_title" placeholder='Title' fullWidth variant="standard" type='text'   name='card_title'  onChange={(e) => this.handleChange(e,'')} /><br/><br/>
-                         
-                          <TextField id="standard-basic card_data" placeholder='Your Toughts'  fullWidth variant="standard" type='text'  name='card_data'  onChange={(e) => this.handleChange(e,'')}/>
+                  <Modal.Body key="c1" className='p-3'>
+                        <Paper className='p-4' elevation={12}>
+                          
+                          <TextField id="standard-outlined message" placeholder='Title '  variant="outlined" type='text'   name='card_title'  onChange={(e) => this.handleChange(e,'')} fullWidth /><br/><br/>
+                          <TextField id='message' type='file' name='card_image' onChange={(e) => this.handleChange(e,'')} fullWidth required /><br/><br/>
+                          <input   id='message' className='textfield p-2' placeholder='Your Toughts'   variant="outlined" type='text'  name='card_data'  onChange={(e) => this.handleChange(e,'')} fullWidth required/>
                         </Paper>
                   </Modal.Body>
                     <Modal.Footer key="c2">
                       <Button className="bl-btn2-ol" variant="secondary" onClick={(e)=>this.onClose(e)}>
                         Close
                       </Button>
-                      <button className="btn btn-outline-success" type="create" id="submit" onClick={(e)=>this.submitCardForm(e)}>
+                      <button className="btn btn-outline-success" type=" submit" id="submit"  disabled={message==''}   onClick={(e)=>this.submitCardForm(e)}>
                         submit
                       </button>
                     </Modal.Footer> 

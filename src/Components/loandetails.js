@@ -83,7 +83,7 @@ export default function builddream ()  {
                 <p className='text-white' style={{marginLeft:150}}>Let's start your dream</p> <p className='text-white' style={{marginLeft:170}}>in a few steps!</p>
             </div>
                 <div className='col-md-8 p-5 '>
-                <div align='end' style={{marginRight:-10}}> <Link to='/myaccount'><img src={require('./Images/home.png')} width={50} height={50}/></Link></div>
+                <div align='end' style={{marginRight:-10}}> <Link to='/myaccount'><img src={require('./Images/home.png')} width={50} height={50}/></Link></div><br/>
                        <h3>Loan and Additional Details</h3><br/>
                         <Paper className='p-3 mt-4 ' sx={{borderRadius:5}} elevation={12}>
                         <Tabs >
@@ -134,7 +134,7 @@ export default function builddream ()  {
                           <TabPanel>
                             <div className='p-3'>
                               <p>Select your employement status?</p>
-                              <div className='d-flex' >
+                              <div className='d-flex flex-wrap' >
                                   <button className='select10'>Employed</button>
                                   <button className='select11'>Unemployed</button>
                                   <button className='select12'>Selfemployed</button>

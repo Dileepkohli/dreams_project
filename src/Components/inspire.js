@@ -4,24 +4,32 @@ import { Paper, TextField } from '@mui/material';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { TiMessageTyping } from 'react-icons/ti';
 import { BiEdit } from 'react-icons/bi';
+import { FcComments } from 'react-icons/fc';
 import { RiDeleteBin5Line } from 'react-icons/ri';
-import { FcLike } from 'react-icons/fc';
+import { AiOutlineHeart } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import inspireService from '../services/inspireService';
+import { Modal, Button } from 'react-bootstrap';
 
 export default function myinformation() {
     const [blogData, setBlogdata] = useState([]);
+    const [showModal, setShowModal] = useState(false);
     const [commentMessage, setcommentMessage] = useState("");
     const [isComment, setIsComment] = useState(false);
-
-   
 
     useEffect(() => {
         getBlogs();
     }, []);
 
-
+    const openModal = () => {
+        setShowModal(true);
+      };
+    
+      const closeModal = () => {
+        setShowModal(false);
+      };
+    
     const handleMessageChange = (event) => {
         setcommentMessage(event.target.value);
         console.log(commentMessage);
@@ -219,11 +227,28 @@ export default function myinformation() {
                                         <div className='col ' >
                                             <div className='d-flex '>
                                                 <div className='ms-auto' onClick={() => openComments(item.blogId)} > {item.comments_count} <TiMessageTyping className='icon28 ms-2' style={{ cursor: 'pointer' }} /></div>
-                                                <div className='ms-3' onClick={() => addLike(item.blogId)}> {item.likes_count} <FcLike className='icon29 ms-2' style={{ cursor: 'pointer' }} /> </div>
+                                                <div className='ms-3' onClick={() => addLike(item.blogId)}> {item.likes_count} <AiOutlineHeart className='icon29 ms-2' style={{ cursor: 'pointer' }} /> </div>
+                                                <div className='ms-3' onClick={openModal}><FcComments className='icon29 ms-2'/></div>
                                             </div>
                                         </div>
                                     </div>
                                 </footer>
+                                    <Modal show={showModal} onHide={closeModal}>
+                                        <Modal.Header closeButton>
+                                           <Modal.Title>Comments</Modal.Title>
+                                        </Modal.Header>
+                                        <Modal.Body>
+                                           <p>Comment  here.</p>
+                                        </Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="primary" onClick={closeModal}>
+                                                submit
+                                            </Button>
+                                            <Button variant="dark" onClick={closeModal}>
+                                                Close
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Modal>
                                 {item.isComment &&
                                     <div>
                                         <div className='p-5'>
