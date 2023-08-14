@@ -1,0 +1,619 @@
+Cardlist:
+import React, { Component } from 'react';
+import { MdAdd }from 'react-icons/md';
+import Card from './card';
+import Createcard from './createcard'
+
+export default class cardlist extends Component {
+  constructor(){
+    super()
+    this.state = {
+       categoryData : [],
+       itemData : [],
+       images:[],
+       show:false
+    }
+  }
+
+  
+
+  componentDidMount(){
+    localStorage.setItem('itemData',JSON.stringify(this.state.itemData));
+    
+  }
+
+  showModel = (e) => {
+    this.setState({
+        show: !this.state.show
+    })
+  }
+
+
+  render() {
+
+    
+
+    const cards = this.state.itemData.map((data,indx)=>{
+      return(
+             <Card key={indx} EachItemData={data} categoryData={this.state.categoryData} />
+      )
+  });
+
+
+    return (
+      <div className='container-fluid p-4 mt-4'>
+        <div className='d-flex'>
+           <h2>Cards List</h2>
+           <button className='btn btn-outline-dark ms-auto' onClick={(e)=>this.showModel(e)}>
+              <span>CREATE</span>
+            <span className='position-relative p-1' style={{top:-2}}><MdAdd/></span>
+           </button>
+         </div>
+         <div>
+           {
+            this.state.itemData.length > 0 ?
+            <div className='d-flex flex-wrap'>{cards}</div> 
+            : <div className='d-flex justify-content-center p-4'>
+               <p>Hello User! You have no cards added in your account.Please click on 'CREATE' button to start adding your products.</p>
+              </div> 
+           }
+         </div>
+         <Createcard categoryData={this.state.categoryData} eachData={undefined} setitemData={(itemData) => this.setState({itemData : [...this.state.itemData, ...itemData]})} 
+             onClose={this.showModel} show={this.state.show} type="create"/>
+      </div>
+    )
+  }
+}
+
+Card.js:
+
+import { Paper } from '@mui/material';
+import React, { Component } from 'react';
+import { BiEdit  } from "react-icons/bi";
+import { RiDeleteBinLine } from 'react-icons/ri';
+import Createcard from './createcard';
+
+
+export default class card extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      show: false,
+      type:''
+    }
+  }
+
+      showModel = (e, type) => {
+        this.setState({
+            show: !this.state.show,
+            type: type
+        })
+      }
+
+      removeItem = () =>{
+        const array = [this.itemData]
+      }
+
+      
+
+  render() {
+
+    
+
+    return (
+      <div className='p-3'>
+       
+            <Paper className='card ms-2' elevation={3}  style={{width:565,marginLeft:-30,borderRadius:20}}>
+              <div className="d-flex ms-auto " style={{ fontSize: 30,marginRight:10,marginTop:-5}}>
+                  <button className="border-0 bg-transparent edit-icon" title="Edit" style={{ marginRight: 20}} onClick={(e)=>this.showModel(e,"update")}><BiEdit /></button>
+                  <button style={{marginRight:10}} className="border-0 bg-transparent del-icon" title="Delete"  onClick={(e)=>this.showModel(e,"delete")}><RiDeleteBinLine /></button><br/>
+              </div>
+              <div className='d-flex'>
+                <div className='p-2' style={{marginLeft:30}} >
+                    {
+                      <img className='image ' src={this.props.imageUrl}   width={140} height={140} style={{borderRadius:70}} />
+                    }
+                </div>
+                  <div className='p-4'>
+                    <h3 style={{color:'blue'}}>{this.props.EachItemData.card_title}</h3>
+                    <p>Upcoming on {this.props.EachItemData.card_date}</p>
+                    <p style={{fontWeight:600}}>Order Id : {this.props.EachItemData.order_id}</p>
+                  </div>
+                  <div className='p-4' style={{marginTop:40,}}><button className='btn btn-primary ' style={{borderRadius:20}}>Pending</button></div>
+              </div>
+              <div className='p-4' style={{marginTop:-20,color:'CaptionText'}}>
+                <p style={{textAlign:'justify',marginLeft:15}}>{this.props.EachItemData.card_data}</p>
+              </div>
+
+            </Paper>
+
+            { <Createcard  onClose={this.showModel}  show={this.state.show}  type={this.state.type}  eachData={this.props.EachIteamData}    removeItem={(itemData) => this.setState({itemData :[]})}   /> }
+            
+      </div>
+    )
+  }
+}
+
+Createcard.js:
+
+import React, { Component } from 'react';
+import { Modal,Button } from 'react-bootstrap';
+import { Paper, TextField } from '@mui/material';
+
+
+export class createcard extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      cardtitle:this.props.eachData && this.props.eachData.cardTitle ? this.props.eachData.cardTitle: '',
+      cardDate:this.props.eachData && this.props.eachData.cardDate ? this.props.eachData.cardDate:'',
+      orderId:this.props.eachData && this.props.eachData.orderId ? this.props.eachData.orderId:'',
+      cardData:this.props.eachData && this.props.eachData.cardData ? this.props.eachData.cardData:'',
+      productId: this.props.eachData &&  this.props.eachData.productId ? this.props.eachData.productId : "",
+      ProductImage:this.props.eachData&& this.props.eachData.ProductImage ? this.props.eachData.ProductImage:''
+      
+    }
+  }
+
+  onClose = (e) => {
+		this.props.onClose && this.props.onClose(e)
+	}
+
+  
+  
+
+  submitCardForm = (e) =>{
+    e.preventDefault()
+    console.log(this.props.setitemData);
+    this.props.setitemData([this.state]);
+    if(this.props.type && this.props.type == 'create'){
+      var msg = "Are you sure, you want to save the product?"
+      
+    }else{
+      var msg = "Are you sure, you want to update the product?"
+      
+    }
+    if(window.confirm(msg)){
+    this.onClose(e)
+  
+    }
+  }
+
+  hendleDeleteItem =  (e,indx) => {
+    e.preventDefault()
+    var msg = "Are you sure, you want to delete the product?"
+    // this.props.setitemData([]);
+    this.setState((prevState) =>({
+       
+    }))
+    console.log(this.props.setitemData);
+   
+    if(window.confirm(msg)){
+      this.onClose(e)
+    }
+  }
+  
+  handleChange = (e) => {
+    if (["card_image", "card_title", "card_date", "card_orderId"].includes(e.target.name)){
+      this.setState({[e.target.name]: (e.target.value)})
+    }else{
+      this.setState({[e.target.name]:e.target.value})
+    }
+  }
+
+  
+  
+
+  render() {
+    var category_data = ""
+		if (this.props.categoryData){
+			category_data = this.props.categoryData.map((each)=>{
+			    return(
+			        <option key={each.categoryId} value={each.categoryId} selected={this.props.type == 'update' && this.props.eachData.categoryId == each.categoryId ? true:false} >{each.categoryName}</option>
+			    )
+			})
+		}
+
+    
+    
+    return (
+      
+      <div className='container-fluid'>
+        {
+           this.props.type && this.props.type =='update' ? [
+
+              <Modal  show={this.props.show} onHide={(e)=>this.onClose(e)}>
+              <Modal.Header closeButton key="a3">
+                  <Modal.Title>Update Card</Modal.Title>
+              </Modal.Header>
+                <Modal.Body key="a1 " className=''>
+                      <Paper className='p-5 ' elevation={3}>
+                        <TextField  variant="standard" placeholder='Image path' fullWidth  onChange={(e) => this.handleChange(e,'')} /><br/><br/>
+                        <TextField id="standard-basic card_title" placeholder='Title' fullWidth variant="standard" type='text'   name='card_title'  onChange={(e) => this.handleChange(e,'')} /><br/><br/>
+                        <TextField id="standard-basic card_date" placeholder='Date' fullWidth variant="standard" type='date'  name='card_date'  onChange={(e) => this.handleChange(e,'')}/><br/><br/>
+                        <TextField id="standard-basic orderId" placeholder='Order Id:' fullWidth variant="standard"  type='text'  name='order_id'  onChange={(e) => this.handleChange(e,'')} /><br/><br/>
+                        <TextField id="standard-basic card_data" placeholder='Your Toughts'  fullWidth variant="standard" type='text'  name='card_data'  onChange={(e) => this.handleChange(e,'')}/>
+                      </Paper>
+                </Modal.Body>
+                  <Modal.Footer key="a2">
+                    <Button className="bl-btn2-ol" variant="secondary" onClick={(e)=>this.onClose(e)}>
+                      Close
+                    </Button>
+                    <button className="btn btn-outline-success" type="submit" id="submit" onClick={(e)=>this.submitCardForm(e)}>
+                      Update
+                    </button>
+                  </Modal.Footer> 
+            </Modal>
+
+           ] 
+           : this.props.type && this.props.type == "delete" ? [
+             
+                <Modal  show={this.props.show} onHide={(e)=>this.onClose(e)}>
+              <Modal.Header closeButton key="b3">
+                  <Modal.Title>Delete card</Modal.Title>
+              </Modal.Header>
+                <Modal.Body key="b1">
+                      <Paper className='p-5 '>
+                        <TextField  variant="standard" name='imageUrl' placeholder='Image path' fullWidth  onChange={(e) => this.handleChange(e,'')} /><br/><br/>
+                        <TextField id="standard-basic card_title" placeholder='Title' fullWidth variant="standard" type='text'   name='card_title'  onChange={(e) => this.handleChange(e,'')} /><br/><br/>
+                        <TextField id="standard-basic card_date" placeholder='Date' fullWidth variant="standard" type='date'  name='card_date'  onChange={(e) => this.handleChange(e,'')}/><br/><br/>
+                        <TextField id="standard-basic orderId" placeholder='Order Id:' fullWidth variant="standard"  type='text'  name='order_id'  onChange={(e) => this.handleChange(e,'')} /><br/><br/>
+                        <TextField id="standard-basic card_data" placeholder='Your Toughts'  fullWidth variant="standard" type='text'  name='card_data'  onChange={(e) => this.handleChange(e,'')}/>
+                      </Paper>
+                </Modal.Body>
+                  <Modal.Footer key="b2">
+                    <Button className="bl-btn2-ol" variant="secondary" onClick={(e)=>this.onClose(e)}>
+                      Close
+                    </Button>
+                    <button className="btn btn-outline-success" type="submit" id="submit" onClick={(e)=>this.hendleDeleteItem(e,'indx')}>
+                      Delete
+                    </button>
+                  </Modal.Footer> 
+            </Modal>
+
+           ] 
+           : [
+                <Modal  show={this.props.show} onHide={(e)=>this.onClose(e)}>
+                <Modal.Header closeButton key="c3">
+                    <Modal.Title>Create card</Modal.Title>
+                </Modal.Header>
+                  <Modal.Body key="c1">
+                        <Paper className='p-5 '>
+                          <TextField  variant="standard" placeholder='Image path' fullWidth  onChange={(e) => this.handleChange(e,'')} /><br/><br/>
+                          <TextField id="standard-basic card_title" placeholder='Title' fullWidth variant="standard" type='text'   name='card_title'  onChange={(e) => this.handleChange(e,'')} /><br/><br/>
+                          <TextField id="standard-basic card_date" placeholder='Date' fullWidth variant="standard" type='date'  name='card_date'  onChange={(e) => this.handleChange(e,'')}/><br/><br/>
+                          <TextField id="standard-basic orderId" placeholder='Order Id:' fullWidth variant="standard"  type='text'  name='order_id'  onChange={(e) => this.handleChange(e,'')} /><br/><br/>
+                          <TextField id="standard-basic card_data" placeholder='Your Toughts'  fullWidth variant="standard" type='text'  name='card_data'  onChange={(e) => this.handleChange(e,'')}/>
+                        </Paper>
+                  </Modal.Body>
+                    <Modal.Footer key="c2">
+                      <Button className="bl-btn2-ol" variant="secondary" onClick={(e)=>this.onClose(e)}>
+                        Close
+                      </Button>
+                      <button className="btn btn-outline-success" type="submit" id="submit" onClick={(e)=>this.submitCardForm(e)}>
+                        submit
+                      </button>
+                    </Modal.Footer> 
+              </Modal>
+
+             ]
+        }
+      </div>
+    )
+  }
+}
+
+export default createcard;
+
+Dreamindex.js:
+
+import React from 'react';
+import './Styles/dreamindex.css'
+import {  Router,Switch, Route, Routes } from 'react-router-dom';
+import Signin from './signin';
+import Signup from './signup';
+import Forgotpwd from './forgotpwd';
+import history from './history';
+import Cardlist from './cardlist'
+import PrivateRoute from './privateroute';
+
+import './Styles/loader.css';
+
+export default function dreamindex() {
+  return (
+    <div>
+      
+      <div>{  /*  <Router history={history}>
+              <Switch>
+                  <Route path='/signin'><Signin/></Route>
+                  <Route path='/signup' ><Signup/></Route>
+                  <Route path='/forgotpwd'><Forgotpwd/></Route>
+                  <PrivateRoute exact path='/' component={Cardlist}/>
+              </Switch>
+            </Router> */    }
+      </div>
+      <div></div>      
+    </div>
+  )
+}
+
+Signin.js:
+
+import React, { Component } from 'react';
+import GoogleIcon from './images/google-48.png';
+import AppleIcon from './images/apple-logo-52.png';
+import { TextField } from '@mui/material';
+
+import {  withRouter} from 'react-router-dom';
+import { BsArrowRight } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
+
+
+class signin extends Component {
+  render() {
+    return (
+      <div>
+        <div  >
+            <div className='row'>
+                <div className='col dream'></div>
+                    <div className='col-lg-5 formdata  col-md-6 col-12 p-0  justify-content-end align-items-center  '>
+                        
+                            <form className=''>
+                                <div className=' ps-5 pt-5 pb-5 '>
+                                    <span style={{fontSize:24,fontWeight:600}}>Signin</span>
+                                    <p className="pt-3 pb-3 m-0 fon" style={{ color: 'gray' }}>Completely Employee-owened, we're driven with a passion</p><br/>
+                                    
+                                    <div className="row d-flex justify-content-start align-items-center   login-btns">
+                                        <div className='col-md-5 mt-1' >
+                                            <button className=' w-100 btn go-btn-ol   ' type="submit">
+                                                <img src={GoogleIcon} />
+                                                <p className="p1 pt-2 " >Continue With Google</p>
+                                            </button>
+                                        </div>
+                                        <div className='col-md-5 mt-2' >
+                                            <button className='  btn  ap-btn2 w-100'  type="submit">
+                                                <img src={AppleIcon}  />
+                                                <p className="p2 pt-2 ">Continue With Apple</p>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="row d-flex justify-content-center align-items-center pt-5 or-div" style={{marginLeft:230,marginTop:-60}}>
+                                    <p className="m-0" >Or</p>
+                                </div>
+                                <div className='login '>
+                                    <TextField id="standard-basic" label="Enter Your Username or Email " placeholder='Enter your Username Or Email' variant="standard" fullWidth  required/><br/><br/>
+                                    <TextField id="standard-basic" label="Enter Your  Password" type='password' placeholder='Enter your Password' variant="standard"  fullWidth required/>
+                                    <button className='btn btn-link forgot ' style={{marginLeft:-12,marginTop:20}}><Link to="/forgotpwd"  >Forgot Password</Link></button>
+                                </div>
+                                <div className='d-flex mt-4 '>
+                                    <button className='btn btn-link forgot   ms-auto'><Link to="/signup">SignUp</Link></button>
+                                    <button className=' continue ms-4'><span>Continue</span><span className='p-2'><BsArrowRight/></span></button>
+                                </div>
+                                <div className='m-6 text-white'>Group<br/>Dreams</div>
+                            </form>
+                        </div>
+            </div>
+        </div>
+      </div>
+    )
+  }
+}
+export default withRouter(signin);
+
+Signup.js:
+
+import React, { Component } from 'react';
+import { TextField } from '@mui/material';
+import {Link,withRouter  } from 'react-router-dom';
+import { BsArrowRight } from "react-icons/bs";
+import $ from 'jquery';
+import notify from './Notify';
+import axios from 'axios';
+import { API_HOST } from './settings'
+
+ class signup extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            "username": "",
+    	    "name": "",
+    	    "email": "",
+    	    "phone": "",
+    	    "password": "",
+    	    "confirm_password": "",
+            "otp_form": false,
+            "otp": 0,
+            "borrowerId": 0
+        }
+    }
+
+    handleChange = (e) => {
+        if (["email", "password", "confirm_password"].includes(e.target.name)){
+            if(e.currentTarget.value == ""){e.currentTarget.classList.add("error")}
+            if(e.currentTarget.value && e.currentTarget.classList.contains("error")){e.currentTarget.classList.remove("error")}
+        }
+        if (["otp"].includes(e.target.name)){
+            this.setState({[e.target.name]: Number(e.target.value)})
+        }else{
+            this.setState({[e.target.name]:e.target.value})
+        }
+    }
+
+    componentDidMount() {
+        $('.loader').fadeOut('slow')
+       
+        if(this.props.location.state?this.props.location.state.params.message:''){
+            notify(this.props.location.state.params.message,'information')
+        }
+
+    }
+   
+    isValid=()=>{
+        if(!document.querySelector("#email").value || !document.querySelector("#password").value
+            || !document.querySelector("#confirm_password").value){
+            var scrollDiv = ""
+            if(!document.querySelector("#email").value){
+                document.querySelector('#email').classList.add("error")
+                scrollDiv = "email"
+            }
+            if(!document.querySelector("#password").value){
+                document.querySelector('#password').classList.add("error")
+                scrollDiv = "password"
+            }
+            if(!document.querySelector("#confirm_password").value){
+                document.querySelector('#confirm_password').classList.add("error")
+                scrollDiv = "confirm_password"
+            }
+            return {"status":false, "reason": "Please fill required fields", "id": scrollDiv}
+        }
+        return {"status":true, "reason":""}
+    }
+
+ 
+   
+        otpSubmit = (event) =>{
+            event.preventDefault();
+            if(true){
+            $('.loader').fadeIn();
+            let data = JSON.stringify({
+                borrowerId: this.state.borrowerId,
+                otp: this.state.otp,
+            });
+            axios({
+                method: 'post',
+                url: API_HOST+'/borrower/verifyOTP',
+                data: data,
+                headers: {
+                "Content-Type": "application/json",
+                }
+            }).then((response) =>{
+                if(response.status === 200 && response.data.success == 1){
+                    notify(response.data.message,'success')
+                    localStorage.setItem('token',response.data.data.token)
+                    localStorage.setItem('user_data',JSON.stringify(response.data.data))
+                    this.props.history.push('/')
+                }else{
+                    notify(response.data.message,'error')
+                }
+                $('.loader').fadeOut('slow')
+            })
+            .catch(function (response) {
+                $(".loader").fadeOut('slow')
+                var error_msg = response.message
+            });
+        }else{
+            var error_msg = ''
+            document.getElementById("error_msg").appendChild(document.createTextNode(error_msg));
+            setTimeout(() => {
+                document.getElementById("error_msg").innerText = '';
+            }, 10000);
+        }
+        }
+    
+        signUpSubmit = (event) =>{
+            event.preventDefault();
+            var response_isvalid = this.isValid()
+            if(!response_isvalid.status){
+                notify(response_isvalid.reason,'warning')
+                setTimeout(function () {
+                    document.querySelector('#'+response_isvalid.id).scrollIntoView({
+                        behavior: 'smooth', block: "center", inline: "nearest"
+                    })
+                }, 100)
+                return false
+            }
+              if(true){
+                $('.loader').fadeIn();
+                let data = JSON.stringify(this.state);
+                axios({
+                    method: 'post',
+                    url: API_HOST+'/borrower/signup',
+                    data: data,
+                    headers: {
+                    "Content-Type": "application/json",
+                    }
+                }).then((response) =>{
+                    if(response.status === 200 && response.data.success == 1){
+                        notify(response.data.message,'success')
+                        this.setState({borrowerId: response.data.data.borrowerId, otp_form: true})
+                    }else{
+                        notify(response.data.message,'error')
+                    }
+                    $('.loader').fadeOut('slow')
+                })
+                .catch(function (response) {
+                    $(".loader").fadeOut('slow')
+                    var error_msg = response.message
+                });
+            }else{
+                var error_msg = ''
+                document.getElementById("error_msg").appendChild(document.createTextNode(error_msg));
+                setTimeout(() => {
+                    document.getElementById("error_msg").innerText = '';
+                }, 10000);
+            }
+        }
+
+
+
+  render(){
+  return (
+    <div className='container-fluid '>
+    <div className='row'>
+        <div className='col dream'></div>
+            <div className='col-lg-5 formdata col-md-6 col-12 p-0  justify-content-end align-items-center  '>
+                {this.state.otp_form ? 
+                        <div className="sign-div login-form-box d-flex justify-content-end align-items-center">
+                        <form onSubmit={this.otpSubmit} className="login-form">
+                            <div className='signup-block borrower-div-otp1 p-2'>
+                                <div className='text-black text-center fontWeight-bold font-24'>Verification</div>
+                                <div className='mt-2 mb-2 login-details borrower-div-otp2'>
+                                <p>Please use the OTP sent to your registered email address <b>{this.state.email}</b></p>
+                                <p id="error_msg" className="text-danger"></p>
+                                    <div className='mb-3'>
+                                        <div class="form-group">
+                                            <input class="form-control" type="number" id="otp" name="otp" autoComplete="off" onChange={(e) => this.handleChange(e)} />
+                                            <label>Enter OTP</label>
+                                        </div>
+                                        <div className='mt-4 w-100 social-btn'>
+                                            <button className='btn btn-primary verify-otp-btn w-40' style={{height:"37px"}} type="submit">
+                                                <p className="p3 m-0">Verify <BsArrowRight /></p>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div> 
+                   :
+                    <form onSubmit={this.signUpSubmit}>
+                        <div className=' ps-5 pt-4 pb-5 '>
+                            <span style={{fontSize:24,fontWeight:600}}>Sign Up</span>
+                            <p className="pt-3 pb-3 m-0 fon" style={{ color: 'gray' }}>Completely Employee-owened, we're driven with a passion</p><br/>
+                        </div>
+                        <div className='signup '>
+                            <TextField id="standard-basic username" label="Enter Your Username  " placeholder='Enter your Username ' variant="standard" fullWidth  required name="username"  autoComplete="off" onChange={(e) => this.handleChange(e)} /><br/><br/>
+                            <TextField id="standard-basic name" label="Enter Your  Full Name"  placeholder='Enter your Full Name' variant="standard"  fullWidth required name="name"  autoComplete="off" onChange={(e) => this.handleChange(e)} /><br/><br/>
+                            <TextField id="standard-basic  phone" variant='standard' label='Enter Your Phone Number' placeholder='Enter your Phone Number' fullWidth required name="phone"  autoComplete="off" onChange={(e) => this.handleChange(e)} /><br/><br/>
+                            <TextField id="standard-basic email" label="Enter Your Email  "  placeholder='Enter your Email' variant="standard"  fullWidth required name="email"  autoComplete="off" onChange={(e) => this.handleChange(e)} /><br/><br/>
+                            <TextField id="standard-basic password" label="Enter Your  Password" type='password' placeholder='Enter your Password' variant="standard"  fullWidth required name="password"  onChange={(e) => this.handleChange(e)} /><br/><br/>
+                            <TextField id="standard-basic confirm_password" label="Confirm Your  Password" type='password' placeholder='Confirm Your Password' variant="standard"  fullWidth required name="confirm_password"  onChange={(e) => this.handleChange(e)} /><br/><br/>
+                            
+                        </div>
+                        <div className='d-flex mt-4 '>
+                            <button className='btn btn-link forgot  ms-auto'><Link to='/signin'>Signin</Link></button>
+                            <button className=' continue ms-4'><span>Continue</span><span className='p-2'><BsArrowRight/></span></button>
+                        </div>
+                        <div className='m-6 text-white'>Group<br/>Dreams</div>
+                    </form>
+                    
+                }
+            </div>
+        </div>
+    </div>
+  )
+}
+}
+export default withRouter(signup);
