@@ -14,7 +14,7 @@ import { Modal, Button } from 'react-bootstrap';
 
 export default function myinformation() {
     const [blogData, setBlogdata] = useState([]);
-    const [showModal, setShowModal] = useState(false);
+    const [show, setShow] = useState(false);
     const [commentMessage, setcommentMessage] = useState("");
     const [isComment, setIsComment] = useState(false);
 
@@ -22,13 +22,8 @@ export default function myinformation() {
         getBlogs();
     }, []);
 
-    const openModal = () => {
-        setShowModal(true);
-      };
-    
-      const closeModal = () => {
-        setShowModal(false);
-      };
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     
     const handleMessageChange = (event) => {
         setcommentMessage(event.target.value);
@@ -228,23 +223,23 @@ export default function myinformation() {
                                             <div className='d-flex '>
                                                 <div className='ms-auto' onClick={() => openComments(item.blogId)} > {item.comments_count} <TiMessageTyping className='icon28 ms-2' style={{ cursor: 'pointer' }} /></div>
                                                 <div className='ms-3' onClick={() => addLike(item.blogId)}> {item.likes_count} <AiOutlineHeart className='icon29 ms-2' style={{ cursor: 'pointer' }} /> </div>
-                                                <div className='ms-3' onClick={openModal}><FcComments className='icon29 ms-2'/></div>
+                                                <div className='ms-3' onClick={handleShow}><FcComments className='icon29 ms-2'/></div>
                                             </div>
                                         </div>
                                     </div>
                                 </footer>
-                                    <Modal show={showModal} onHide={closeModal}>
-                                        <Modal.Header closeButton>
+                                    <Modal show={show} onHide={handleClose}  size="lg" backdrop='static'>
+                                        <Modal.Header >
                                            <Modal.Title>Comments</Modal.Title>
                                         </Modal.Header>
                                         <Modal.Body>
                                            <p>Comment  here.</p>
                                         </Modal.Body>
                                         <Modal.Footer>
-                                            <Button variant="primary" onClick={closeModal}>
+                                            <Button variant="primary" onClick={handleClose}>
                                                 submit
                                             </Button>
-                                            <Button variant="dark" onClick={closeModal}>
+                                            <Button variant="dark" onClick={handleClose}>
                                                 Close
                                             </Button>
                                         </Modal.Footer>

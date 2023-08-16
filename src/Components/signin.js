@@ -30,11 +30,6 @@ export default function signin() {
         } else (formValues.password.length >= 12)
         errors.email = 'password is too long';
 
-
-        if (formValues.cnfPassword != formValues.password) {
-            errors.cnfPassword = 'confirm password should match password'
-        }
-
         return errors;
     }
 

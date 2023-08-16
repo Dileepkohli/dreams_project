@@ -29,6 +29,7 @@ const inspireService = {
                 console.error(error);
             });
     },
+    
 
     Update: async (url, data) => {
         return axios.put(URL + url, data)
@@ -36,7 +37,6 @@ const inspireService = {
             .catch(error => {
                 console.error(error);
             });
-
     },
 
    
@@ -49,7 +49,6 @@ const inspireService = {
             .catch(error => {
                 console.error(error);
             });
-
     },
     
     Delete: async (url) => {
@@ -61,8 +60,6 @@ const inspireService = {
 
     }
 
-
-
 }
 
-export default inspireService
+export default inspireService;
