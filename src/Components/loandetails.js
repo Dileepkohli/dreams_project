@@ -80,7 +80,7 @@ export default function builddream ()  {
 
                     </Timeline>
                 </div>
-                <p className='text-white' style={{marginLeft:150}}>Let's start your dream</p> <p className='text-white' style={{marginLeft:170}}>in a few steps!</p>
+                <p className='text-white' style ={{marginLeft:150}}>Let's start your dream</p> <p className='text-white' style={{marginLeft:170}}>in a few steps!</p>
             </div>
                 <div className='col-md-8 p-5 '>
                 <div align='end' style={{marginRight:-10}}> <Link to='/myaccount'><img src={require('./Images/home.png')} width={50} height={50}/></Link></div><br/>

@@ -24,7 +24,7 @@ import Myaccount from './myaccount';
 import Myinfo from './myinfo';
 import Dining from './dining';
 import Retail from './retail';
-import Community from './community';
+import Testimonial from './testimonial'
 import Inspire from './inspire';
 import Mydreams from './mydreams';
 import Forgotpassword from './forgotpwd';
@@ -64,7 +64,8 @@ export default class classindex extends Component {
             <Route path='/inspire' element={<Inspire/>}/>
             <Route path='/mydreams' element={<Mydreams/>}/>
             <Route path='/forgotpassword' element={<Forgotpassword/>}/>
-            <Route path='/community' element={<Community/>}/>
+            <Route path='/community' element={<Testimonial/>}/>
+            {/* <Route path='/community' element={<Community/>}/> */}
             <Route path='/contactlender' element={<Contactlender/>}/>
         </Routes>
       </div>

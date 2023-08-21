@@ -66,10 +66,10 @@ export default function infodetails () {
                     <div className='justify-content-center align-items-center p-4'><p className='text-white' style={{marginLeft:240}}>Let's start your dream</p> <p className='text-white' style={{marginLeft:260}}>in a few steps!</p></div>
             </div>
         </div>
-        <div className='col-md-8 container p-5 '>
+        <div className='col-md-8  p-5 '>
         <div align='end' style={{marginRight:-10}}> <Link to='/myaccount'><img src={require('./Images/home.png')} width={50} height={50}/></Link></div>
-            <div className='p-2 mt-3'>
-            <Paper className='p-4' elevation={12}>
+            <div className='p-4 mt-3'>
+            <Paper className='p-5' elevation={12}>
                 <div className='d-flex'><BsPerson style={{fontSize:24}}/> <p className='ms-2'> How many of you there ? </p></div><hr/><br/>
                 <div className='row p-1'>
                     <div className='col'>

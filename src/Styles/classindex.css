@@ -421,10 +421,16 @@
    font-size: 35px;
   
 }
+.icon32{
+   font-size: 15px;
+   margin-top: -23px;
+   color: #bd64cf;
+}
 
 .paper23 img{
    margin-left: 45px;
    margin-top:30px;
+  
 }
 
 .select1{
@@ -729,3 +735,15 @@
    padding-bottom: 50px;
 
 }
+
+.leftSide{
+  
+   border: 2px solid black;
+   border-radius: 40px 0px 0px 40px;
+   color: black;
+ } 
+ .rightSide{
+ 
+   border: 2px solid black;
+   border-radius: 0px 40px 40px 0px;
+ }
