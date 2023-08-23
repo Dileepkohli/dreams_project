@@ -15,7 +15,8 @@ import testimonialServices from '../services/testimonialServices';
 export default function testimonials() {
     const [community,setCommunity] = useState([])
     const [show,setShow] =  useState(false);
-    const [search,setSearch] = useState('')
+    const [search,setSearch] = useState('');
+    const [ searchCommunity,setSearchCommunity] = useState([]);
   
   
     useEffect(()=>{
@@ -29,17 +30,41 @@ export default function testimonials() {
                 var testArr = response.data;
                 console.log(testArr);
                 setCommunity(response.data)
+               
             }
         })
     } 
+
+    useEffect(()=>{
+        if(search===''){
+            setSearchCommunity(community);
+        }else {
+            const searched = community.filter(item =>
+                item.title.toLowerCase().includes(search.toLowerCase())
+            );
+            setSearchCommunity(searched);
+        }
+    },[search,community])
 
    
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     
-    const handleClick = () =>{
+    const handleClick = (e) =>{
         console.log(search)
+
+        // testimonialServices.getAll("testimonial/list?pageNo=1&perPage=10").then(response=>{
+        //     if(response != undefined){
+        //         console.log(response)
+
+        //         var searchItem = response.data;
+        //         console.log(searchItem);
+        //         setSearch(response.data)
+        //     }
+        // })
+        // setSearch(data.filter(f => f.title.includes(e.target.value)))
+        
     }
 
 
@@ -97,7 +122,7 @@ export default function testimonials() {
                         <div className='col-md-6 p-4'>
                             <div className='d-flex ' >
                                 <TextField type='text' value={search} className='pt-3' name='search' onChange={(e)=>setSearch(e.target.value)} label='search' placeholder='Search Here'  id="standard-basic" variant='standard' fullWidth/>
-                              
+                               
                                 <div className='icon d-flex' style={{marginTop:-10}}>
                                     <Paper className='ms-4'>
                                         <AiOutlineSearch className='icon26' onClick={handleClick} />
@@ -137,16 +162,18 @@ export default function testimonials() {
                                     </Modal>
                 </div>
                 <div className='d-flex flex-wrap pt-4' style={{ marginLeft: -20 }}>
-                        {community.map((item, index) => {
+                        {searchCommunity.map((item, index) => {
                             return <Paper className='m-4' key={index} elevation={12} style={{ width: 565, borderRadius: 20 }}>
                                 
                                 <section className='p-4'>
                                    <p className='text-primary'>{item.author}.17 Mar,2023</p>
-                                   <div className='d-flex p-2'>
-                                        <div style={{marginLeft:20}} >
+                                   <div className='row p-2 d-flex'>
+                                        <div className='col-sm-3' style={{marginLeft:20}} >
                                             <img className='image'    width={140} height={140} style={{borderRadius:70,}} />
                                         </div>                     
-                                        <h2  className='p-5' ><BiSolidQuoteRight className='icon32'/> {item.title} <BiSolidQuoteRight className='icon32'/></h2>
+                                        <div className='col-sm-7'>
+                                           <h2  className='p-5' ><BiSolidQuoteRight className='icon32'/> {item.title} <BiSolidQuoteRight className='icon32'/></h2>
+                                        </div>
                                     </div>
                                     <p className='pt-2' style={{ textAlign: 'justify' }}>{item.description}</p>
                                 </section>
