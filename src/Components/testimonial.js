@@ -2,9 +2,9 @@ import React from 'react';
 import { Paper, TextField } from '@mui/material';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { PiPlusBold } from 'react-icons/pi';
-import { BiEdit } from 'react-icons/bi';
 import { BiSolidQuoteRight } from 'react-icons/bi';
-import { BiSolidQuoteLeft } from 'react-icons/bi';
+import { BiEdit  } from "react-icons/bi";
+import { RiDeleteBinLine } from 'react-icons/ri';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Modal, Button } from 'react-bootstrap';
@@ -72,7 +72,7 @@ export default function testimonials() {
         initialValues: {
             title: '',
             testimony: '',
-            icon: '',
+            icons: '',
             searching:''
         },
         onSubmit: (values) => {
@@ -80,7 +80,7 @@ export default function testimonials() {
             let dataObj = {
                 title: values.title,
                 description: values.testimony,
-                image: ""
+                image: values.icons
             }
             testimonialServices.postData("/testimonial/add", dataObj).then(response => {
                 if (response != undefined) {
@@ -140,7 +140,7 @@ export default function testimonials() {
                         
 
                         <Modal show={show} onHide={handleClose}   backdrop='static'>
-                            <form></form>
+                            
                                         <Modal.Header >
                                            <Modal.Title>Testimonials</Modal.Title>
                                         </Modal.Header>
@@ -148,7 +148,7 @@ export default function testimonials() {
                                             <form onSubmit={formik.handleSubmit}>
                                               <TextField type='text' name='title' onChange={formik.handleChange} value={formik.values.title} placeholder='Enter title of testimonial'  variant='outlined' fullWidth required/><br/><br/>
                                               <TextField type='text' name='testimony'  onChange={formik.handleChange} value={formik.values.testimony} placeholder="what's in your mind"  variant='outlined' fullWidth  required/><br/><br/>
-                                              <TextField type='file' name='icon'  onChange={formik.handleChange} value={formik.values.icon} fullWidth/><br/><br/><br/>
+                                              <TextField type='file' name='icons'  onChange={formik.handleChange} value={formik.values.icons} fullWidth/><br/><br/><br/>
                                              <div className='d-flex'>
                                                 <Button variant="primary" type='submit' >
                                                     submit
@@ -166,14 +166,23 @@ export default function testimonials() {
                             return <Paper className='m-4' key={index} elevation={12} style={{ width: 565, borderRadius: 20 }}>
                                 
                                 <section className='p-4'>
-                                   <p className='text-primary'>{item.author}.17 Mar,2023</p>
+                                    <div className='row'>
+                                       <div className='col-8'><p className='text-primary'>{item.author}.17 Mar,2023</p></div>
+                                       <div className='col-3 border'>
+                                            <div className='d-flex ' align='end' style={{marginTop:20}}>
+                                                <BiEdit className='icon33'/>
+                                                {/* <RiDeleteBinLine className='icon33'/> */}
+                                            </div>
+                                       </div> 
+                                    </div>
                                    <div className='row p-2 d-flex'>
-                                        <div className='col-sm-3' style={{marginLeft:20}} >
+                                        <div className='col-sm-4 ' style={{marginLeft:10}} >
                                             <img className='image'    width={140} height={140} style={{borderRadius:70,}} />
                                         </div>                     
-                                        <div className='col-sm-7'>
-                                           <h2  className='p-5' ><BiSolidQuoteRight className='icon32'/> {item.title} <BiSolidQuoteRight className='icon32'/></h2>
+                                        <div className='col-sm-7 '>
+                                           <h2  className='p-4' ><BiSolidQuoteRight className='icon32'/> {item.title} <BiSolidQuoteRight className='icon32'/></h2>
                                         </div>
+                                        
                                     </div>
                                     <p className='pt-2' style={{ textAlign: 'justify' }}>{item.description}</p>
                                 </section>

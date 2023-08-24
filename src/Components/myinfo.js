@@ -4,9 +4,22 @@ import { IoPersonSharp } from 'react-icons/io5';
 import { AiOutlineMail } from 'react-icons/ai';
 import { CiLocationOn } from 'react-icons/ci';
 import { Link } from 'react-router-dom';
+import { useFormik } from 'formik';
 
 export default function myinformation () {
   
+    const formik = useFormik({
+        initialValues : {
+            firstname:'',
+            lastname:'',
+            email:'',
+            zipcode:''
+        },
+        onSubmit:(values) =>{
+            console.log(values)
+        }
+    });
+
     return (
       <div>
          <header>
@@ -35,30 +48,32 @@ export default function myinformation () {
             <div className='col-md-6  '>
                 <div className='p-5 '>
                     <Paper className=' p-5 infocard'  elevation={12}  style={{borderRadius:20}}>
+                        <form onSubmit={formik.handleSubmit}>
                         <div className='d-flex  pt-4'>
                             <IoPersonSharp  className='icon'/>
                             <p style={{marginLeft:10, marginTop:-5,color:'black',fontSize:21}}>First Name</p>
                         </div>
-                        <TextField  className='text-dark' id="standard-basic"  variant="standard" fullWidth/>
+                        <TextField  className='text-dark' id="standard-basic"  variant="standard" name='firstname' value={formik.values.firstname} onChange={formik.handleChange}  required fullWidth/>
                         <div className='d-flex  pt-4'>
                             <IoPersonSharp className='icon'/>
                             <p style={{marginLeft:10, marginTop:-5,color:'black',fontSize:21}}>Last Name</p>
                         </div>
-                        <TextField  className='text-dark' id="standard-basic"  variant="standard" fullWidth/>
+                        <TextField  className='text-dark' id="standard-basic"  variant="standard" name='lastname' value={formik.values.lastname} onChange={formik.handleChange}  required fullWidth/>
                         <div className='d-flex  pt-4'>
                             <AiOutlineMail  className='icon'/>
                             <p style={{marginLeft:10, marginTop:-5,color:'black',fontSize:21}}>Email Address</p>
                         </div>
-                        <TextField  className='text-dark' id="standard-basic"  variant="standard" fullWidth/>
+                        <TextField  className='text-dark' id="standard-basic"  variant="standard" name='email' value={formik.values.email} onChange={formik.handleChange}  required fullWidth/>
                         <div className='d-flex  pt-4'>
                             <CiLocationOn className='icon'/>
                             <p style={{marginLeft:10, marginTop:-5,color:'black',fontSize:21}}>Zip Code</p>
                         </div>
-                        <TextField  className='text-dark' id="standard-basic"  variant="standard" fullWidth/><br/><br/>
+                        <TextField  className='text-dark' id="standard-basic"  variant="standard" name='zipcode' value={formik.values.zipcode} onChange={formik.handleChange}  required fullWidth/><br/><br/>
                         <div className='d-flex pt-3'>
-                            <button className='btn btn-primary' style={{borderRadius:40,width:100,height:37}}>SAVE</button><br/><br/>
+                            <button className='btn btn-primary' type='submit' style={{borderRadius:40,width:100,height:37}}>SAVE</button><br/><br/>
                             <button className='btn btn-primary ms-3' style={{borderRadius:40,width:100,height:37}}><Link to='/myaccount' className='text-white text-decoration-none'>BACK</Link></button><br/>
                         </div>
+                        </form>
                     </Paper>
                 </div>
             </div>
