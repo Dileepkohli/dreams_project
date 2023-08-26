@@ -168,12 +168,7 @@ export default function testimonials() {
                                 <section className='p-4'>
                                     <div className='row'>
                                        <div className='col-8'><p className='text-primary'>{item.author}.17 Mar,2023</p></div>
-                                       <div className='col-3 border'>
-                                            <div className='d-flex ' align='end' style={{marginTop:20}}>
-                                                <BiEdit className='icon33'/>
-                                                {/* <RiDeleteBinLine className='icon33'/> */}
-                                            </div>
-                                       </div> 
+                                      
                                     </div>
                                    <div className='row p-2 d-flex'>
                                         <div className='col-sm-4 ' style={{marginLeft:10}} >
