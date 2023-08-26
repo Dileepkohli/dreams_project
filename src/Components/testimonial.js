@@ -127,7 +127,7 @@ export default function testimonials() {
                                     <Paper className='ms-4'>
                                         <AiOutlineSearch className='icon26' onClick={handleClick} />
                                     </Paper>
-                                    <Paper className='ms-4' >
+                                    <Paper className='ms-4'>
                                         <PiPlusBold className='icon26' onClick={handleShow}/>
                                     </Paper>
                                     <Paper className='ms-4'>
