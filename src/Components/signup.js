@@ -23,6 +23,7 @@ export default function signup() {
         let dataObj={
             otp:Number(otp),
             borrowerId:borrowerId
+            
         }
         authServices.signUp("/borrower/verifyOTP", dataObj).then(response => {
             if (response != undefined) {

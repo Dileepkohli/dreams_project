@@ -86,10 +86,13 @@ export default function testimonials() {
                 if (response != undefined) {
                     console.log(response);
                     getCommunity();
+                    handleClose();
                     // if (response.data != undefined) {
 
                     // }
 
+                }else{
+                    handleClose();
                 }
             })
         }
@@ -150,7 +153,7 @@ export default function testimonials() {
                                               <TextField type='text' name='testimony'  onChange={formik.handleChange} value={formik.values.testimony} placeholder="what's in your mind"  variant='outlined' fullWidth  required/><br/><br/>
                                               <TextField type='file' name='icons'  onChange={formik.handleChange} value={formik.values.icons} fullWidth/><br/><br/><br/>
                                              <div className='d-flex'>
-                                                <Button variant="primary" type='submit' >
+                                                <Button variant="primary" type='submit'>
                                                     submit
                                                 </Button>
                                                 <Button variant="dark" className='ms-4' onClick={handleClose}>
