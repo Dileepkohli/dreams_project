@@ -12,7 +12,10 @@ const URL = "https://getinfy.cloud";
 const authServices = {
 
     getAll: async (url) => {
-        return axios.get(URL + url)
+        console.log(localStorage.getItem('token'));
+        const auth_token = localStorage.getItem('token');
+       // axios.defaults.headers.post['Authorization'] = auth_token
+        return axios.get(URL + url,{ headers: {"Authorization" : `Bearer ${auth_token}`} })
             .then(response => response.data)
             .catch(error => {
                 console.error(error);

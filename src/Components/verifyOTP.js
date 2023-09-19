@@ -17,7 +17,12 @@ export default function signin() {
 
     const handleSubmit = () =>{
       console.log(otp)
-     navigate('/signin');
+      if (response.success == 1) {
+        enqueueSnackbar("password changed", {variant: "success",anchorOrigin:{ vertical: 'top',
+        horizontal: 'right'},autoHideDuration: 3000})
+        navigate('/signin');
+      }
+
   }
 
   return (
@@ -39,6 +44,7 @@ export default function signin() {
                                     <button className='btn btn-link text-decoration-none pt-5' style={{fontWeight:'bold',marginLeft:-10}}>Resend Code</button><br/>
                                     
                                     <div  className='d-flex pt-4' style={{marginRight:30}}>
+                                    <button className='btn btn-primary ms-auto' style={{ borderRadius: 20, width: 140 }} onClick={backToForgot}>Cancel</button>
                                         <button className='btn btn-primary ms-auto' style={{borderRadius:20,width:140}} type='submit'><>Continue</> <span><BsArrowRight/></span></button>
                                     </div>
                         </div>

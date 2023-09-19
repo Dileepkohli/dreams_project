@@ -242,6 +242,43 @@
    color: rgb(66, 115, 220);
 }
 
+.paper23 img{
+  margin-left: 45px;
+  margin-top:30px;
+ 
+}
+
+.paper24{
+ 
+  height: 200px;
+  background-color: #95b7d1;
+  border-radius: 15px;
+ 
+}
+
+.paper25{
+ 
+  height: 200px;
+  background-color: #ffd8e6;
+  border-radius: 15px;
+ 
+}
+
+.paper26{
+ 
+  height: 200px;
+  background-color: #d3b4f6;
+  border-radius: 15px;
+ 
+}
+
+.paper27{
+  
+  height: 200px;
+  background-color: rgb(225, 239, 248);
+  border-radius: 15px;
+ 
+}
 
 .icon1{
    margin-left: 8px;
@@ -432,11 +469,11 @@
    margin: 10px;
 }
 
-.paper23 img{
-   margin-left: 45px;
-   margin-top:30px;
-  
+.icon34{
+ 
+  font-size: 40px;
 }
+
 
 .select1{
    width: 65px;

@@ -103,7 +103,7 @@ export default function builddream () {
                     <div className='p-3 pt-4 d-flex' style={{marginRight:10}}>
                         <button  onClick={backwards} className='btn btn-outline-primary ms-auto ' style={{borderRadius:20,width:100,textDecoration:'none'}}><HiArrowLongLeft/><Link  className=' text-decoration-none'>Back</Link></button>
                         <button className='btn btn-primary ms-4' style={{borderRadius:20,width:100}}><Link to='/offersummary' className='text-white text-decoration-none' >Next</Link> <HiArrowLongRight/></button>
-                    </div><br/>
+                    </div><br/><br/>
                 </div>
             </div>
         </div>

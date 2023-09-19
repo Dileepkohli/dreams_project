@@ -29,6 +29,8 @@ import Inspire from './inspire';
 import Mydreams from './mydreams';
 import Forgotpassword from './forgotpwd';
 import Contactlender from './contactlender';
+import Dashboard from './Dashboard';
+import Changepwd from './Changepwd';
 import '../Styles/classindex.css';
 
 export default class classindex extends Component {
@@ -64,6 +66,8 @@ export default class classindex extends Component {
             <Route path='/inspire' element={<Inspire/>}/>
             <Route path='/mydreams' element={<Mydreams/>}/>
             <Route path='/forgotpassword' element={<Forgotpassword/>}/>
+            <Route path='/dashboard' element={<Dashboard/>}/>
+            <Route path='/changepwd' element={<Changepwd/>}/>
             <Route path='/community' element={<Testimonial/>}/>
             {/* <Route path='/community' element={<Community/>}/> */}
             <Route path='/contactlender' element={<Contactlender/>}/>

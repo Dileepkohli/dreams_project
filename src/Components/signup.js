@@ -6,15 +6,36 @@ import { BsArrowRight } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import * as yup from 'yup';
 import { useState } from 'react';
 import { useFormik } from 'formik';
 import authServices from '../services/authServices';
 import { MuiOtpInput } from 'mui-one-time-password-input';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormHelperText from '@mui/material/FormHelperText';
+import Input from '@mui/material/Input';
+import FormControl from '@mui/material/FormControl';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import IconButton from '@mui/material/IconButton';
 
 export default function signup() {
     const [otp, setOtp] = useState();
     const [borrowerId, setborrowerId]= useState();
     const [isRegister, setRegister] = useState(true);
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [showpassword, setShowpassword] = React.useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleClickShowpassword = () => setShowpassword((show) => !show);
+  
+    const handleMouseDownPassword = (event) => {
+      event.preventDefault();
+    };
+  
+    
     const handleChangeOTP = (newValue) => {
         setOtp(newValue)
     }
@@ -28,40 +49,35 @@ export default function signup() {
         authServices.signUp("/borrower/verifyOTP", dataObj).then(response => {
             if (response != undefined) {
                 console.log(response);
-                navigate('/signin');
+               
                 //navigate('/');
             }
+            if (response.success == 1) {
+                enqueueSnackbar("password changed", {variant: "success",anchorOrigin:{ vertical: 'top',
+                horizontal: 'right'},autoHideDuration: 3000})
+                navigate('/signin');
+              }
+  
         })
         console.log(otp)
     }
 
     const navigate = useNavigate();
 
-    const VerifyDetails = (formValues) => {
-        const errors = {
-            email: '',
-            password: '',
-            cnfPassword: ''
-        }
-
-        if (!formValues.email) {
-            errors.email = 'Required';
-        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formValues.email)) {
-            errors.email = 'Invalid email address';
-        }
-
-        if (formValues.password.length <= 8) {
-            errors.password = 'password is too short';
-        } else (formValues.password.length >= 12)
-        errors.email = 'password is too long';
-
-
-        if (formValues.cnfPassword != formValues.password) {
-            errors.cnfPassword = 'confirm password should match password'
-        }
-
-        return errors;
-    }
+    const validationSchema = yup.object().shape({
+        email: yup
+            .string()
+            .email('Invalid email address')
+            .required('Email is required'),
+        password: yup
+            .string()
+            .min(8, 'Password must be at least 8 characters')
+            .required('Password is required'),
+        cnfPassword: yup
+            .string()
+            .oneOf([yup.ref('password'), null], 'Passwords must match')
+            .required('Confirm Password is required'),
+    })
 
     const formik = useFormik({
         initialValues: {
@@ -69,6 +85,7 @@ export default function signup() {
             password: '',
             cnfPassword: ''
         },
+        validationSchema,
 
 
         onSubmit: (values) => {
@@ -78,7 +95,6 @@ export default function signup() {
                 var dataObj = {
                     name: values.email,
                     email: values.email,
-                    phone: "",
                     password: values.password,
                     confirm_password: values.cnfPassword
 
@@ -130,14 +146,55 @@ export default function signup() {
                                     </div>
                                 </div><br />
                                 <p align='center' className='pt-3'>Or</p>
-                                <TextField id="standard-basic" type='email' label="Enter Your Username or Email " value={formik.values.email} onChange={formik.handleChange} name='email' placeholder='Enter your Username Or Email' variant="standard" fullWidth required /><br /><br />
+                                <TextField id="standard-basic" type='email' label="Enter Your Username or Email " value={formik.values.email} onChange={formik.handleChange} name='email' placeholder='Enter your Username Or Email' variant="standard" fullWidth  /><br />
+                                {formik.touched.email && formik.errors.email ? ( <div style={{color:'red'}}>{formik.errors.email}</div>) : null}<br/>
 
-                                <TextField id="standard-basic" label="Enter Your  Password" type='password' onChange={formik.handleChange} value={formik.values.password} name='password' placeholder='Enter your Password' variant="standard" fullWidth required />
-                                <p className='text-danger'>{formik.errors.password}</p>
-                                <TextField id="standard-basic" label="Confirm Your  Password" type='password' onChange={formik.handleChange} values={formik.values.cnfPassword} name='cnfPassword' placeholder='Enter your Password' variant="standard" fullWidth required />
-                                <p className='text-danger'>{formik.errors.cnfPassword}</p>
+                                <FormControl  variant="standard" fullWidth >
+                                    <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+                                    <Input
+                                        id="standard-adornment-password"
+                                        type={showPassword ? 'text' : 'password'}
+                                        value={formik.values.password} 
+                                        onChange={formik.handleChange} 
+                                        name='password'
+                                        endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                        }
+                                    />
+                                    </FormControl>
+                                {formik.touched.password && formik.errors.password ? ( <div style={{color:'red'}}>{formik.errors.password}</div>) : null}<br/><br/>
+                                <FormControl  variant="standard" fullWidth >
+                                    <InputLabel htmlFor="standard-adornment-password">Confirm Password</InputLabel>
+                                    <Input
+                                        id="standard-adornment-password"
+                                        type={showpassword ? 'text' : 'password'}
+                                        value={formik.values.cnfPassword} 
+                                        onChange={formik.handleChange} 
+                                        name='cnfPassword'
+                                        endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowpassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            >
+                                            {showpassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                        }
+                                    />
+                                    </FormControl>
+                                {formik.touched.cnfPassword && formik.errors.cnfPassword ? ( <div style={{color:'red'}}>{formik.errors.cnfPassword}</div>) : null}<br/>
 
-                                <div className='d-flex pt-3' style={{ marginRight: 30 }}>
+                                <div className='d-flex pt-5' style={{ marginRight: 30 }}>
                                     <button className='btn btn-link ms-auto text-decoration-none'><Link to='/signin' className='text-decoration-none'>Signin</Link></button>
                                     <button className='btn btn-primary ms-2' style={{ borderRadius: 20, width: 140 }} type='submit' >Continue <span><BsArrowRight /></span></button>
                                 </div>

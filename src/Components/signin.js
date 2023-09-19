@@ -6,32 +6,48 @@ import { BsArrowRight } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 import authServices from '../services/authServices';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormHelperText from '@mui/material/FormHelperText';
+import Input from '@mui/material/Input';
+import FormControl from '@mui/material/FormControl';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import IconButton from '@mui/material/IconButton';
+import { useSnackbar } from 'notistack';
 
 export default function signin() {
 
     const navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
 
-    const VerifyDetails = (formValues) => {
-        const errors = {
-            email: '',
-            password: '',
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [showpassword, setShowpassword] = React.useState(false);
 
-        }
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleClickShowpassword = () => setShowpassword((show) => !show);
+  
+    const handleMouseDownPassword = (event) => {
+      event.preventDefault();
+    };
+  
 
-        if (!formValues.email) {
-            errors.email = 'Required';
-        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formValues.email)) {
-            errors.email = 'Invalid email address';
-        }
-
-        if (formValues.password.length <= 8) {
-            errors.password = 'password is too short';
-        } else (formValues.password.length >= 12)
-        errors.email = 'password is too long';
-
-        return errors;
-    }
+    const validationSchema = yup.object().shape({
+        email: yup
+            .string()
+            .email('Invalid email address')
+            .required('Email is required'),
+        password: yup
+            .string()
+            .min(8, 'Password must be at least 8 characters')
+            .required('Password is required'),
+        // cnfPassword: yup
+        //     .string()
+        //     .oneOf([yup.ref('password'), null], 'Passwords must match')
+        //     .required('Confirm Password is required'),
+    })
 
     const formik = useFormik({
         initialValues: {
@@ -39,6 +55,7 @@ export default function signin() {
             password: '',
 
         },
+        validationSchema,
 
 
         onSubmit: (values) => {
@@ -58,6 +75,8 @@ export default function signin() {
                     if (response.data != undefined) {
                         localStorage.setItem('token', response.data.token)
                           localStorage.setItem('user_data', JSON.stringify(response.data))
+                          enqueueSnackbar("Welcome to Borrowers", {variant: "success",anchorOrigin:{ vertical: 'top',
+                          horizontal: 'right'},autoHideDuration: 3000})
                           navigate('/myaccount');
                     }
 
@@ -92,9 +111,30 @@ export default function signin() {
                                 </div>
                             </div><br />
                             <p align='center' className='pt-3'>Or</p>
-                            <TextField id="standard-basic " label="Enter Your Username or Email " type='email' name='email' placeholder='Enter your Username Or Email' onChange={formik.handleChange} variant="standard" fullWidth required /><br /><br />
-                            <p className='text-danger'></p>
-                            <TextField id="standard-basic" label="Enter Your  Password" type='password' name='password' placeholder='Enter your Password' variant="standard" onChange={formik.handleChange} fullWidth required /><br /><br />
+                            <TextField id="standard-basic " label="Enter Your Username or Email " type='email' name='email' placeholder='Enter your Username Or Email' onChange={formik.handleChange} variant="standard" fullWidth  /><br />
+                            <p className='text-danger'>{formik.errors.email}</p><br/>
+                            <FormControl  variant="standard" fullWidth >
+                                    <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+                                    <Input
+                                        id="standard-adornment-password"
+                                        type={showPassword ? 'text' : 'password'}
+                                        value={formik.values.password} 
+                                        onChange={formik.handleChange} 
+                                        name='password'
+                                        endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                        }
+                                    />
+                                    </FormControl>
+                                    <p className='text-danger'>{formik.errors.password}</p><br/>
                             <button className='btn btn-link text-decoration-none' style={{ marginLeft: -10 }}><Link to='/forgotpassword' className='text-decoration-none' >Forgot Password</Link></button>
                             <div className='d-flex pt-3' style={{ marginRight: 30 }}>
                                 <button className='btn btn-link ms-auto text-decoration-none'><Link to='/' className='text-decoration-none'>Signup</Link></button>

@@ -3,27 +3,30 @@ import { Paper, TextField } from '@mui/material';
 import { IoPersonSharp } from 'react-icons/io5';
 import { BsStarHalf } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Navbar from './Navbar';
+import Footer from './Footer';
 
 
 export default function myaccount  () {
+     
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+
+
     return (
       <div>
         <header>
-          <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-light p-4">
-            <img src={require('./Images/WhatsApp Image 2023-07-24 at 12.58.35.jpg')} width={250} height={40}/>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse  " id="navbarNavDropdown">
-                <ul class="navbar-nav ms-auto mt-2">
-                    <li class="nav-item ms-5 "><Link to='/builddream' className='text-dark text-decoration-none'>BUILD A DREAM</Link> </li>
-                    <li class="nav-item ms-5"><Link to='/inspire' className='text-dark text-decoration-none'>INSPIRE</Link></li>
-                    <li class="nav-item ms-5"><Link to='/community' className='text-dark text-decoration-none'>COMMUNITY</Link></li>
-                    <li class="nav-item ms-5"><Link to='/mydreams' className='text-dark text-decoration-none'>MY DREAMS</Link></li>
-                    <li class="nav-item ms-5"><Link to='/'  className='text-dark text-decoration-none' >LOGOUT</Link></li>
-                </ul>
-            </div>
-            </nav>
+          <Navbar/>
         </header>
 
         <section> 
@@ -71,50 +74,7 @@ export default function myaccount  () {
          </section> 
         
          <footer className='footer p-2'>
-            <div className='p-5  text-white row '>
-                <div className='col-md-3'>
-                    <h4>COMPANY</h4><br/>
-                    <p>About Us</p>
-                    <p>careers</p>
-                    <p>Patners</p>
-                    <p>Contact</p>
-
-                </div>
-                <div className='col-md-3'>
-                    <h4>RESOURCES</h4><br/>
-                    <p>Resouces center</p>
-                    <p>Integration</p>
-                    <p>Partners</p>
-                    <p>Glossary</p>
-                </div>
-                <div className='col-md-3'>
-                    <p>Sign up for our monthly newsletter</p><hr/>
-                    <div className='d-flex'>
-                    <p>Email</p>
-                        <button className='btn btn-primary ms-auto' style={{borderRadius:30}}>Subscribe</button>
-                    </div>
-                </div><br/>
-                <div className='col-md-3  mt-2' >
-                    <div className='d-flex '>
-                        <img src={require('./Images/Download_on_the_App_Store_Badge.svg.png')} width={120} height={40} />
-                        <img className='ms-2' style={{marginTop:-5}} src={require('./Images/play-store-logo-nisi-filters-australia-11.png')} width={120} height={50}/>
-                        
-                    </div><br/>
-                    <div className='pt-5 social-icon' style={{marginLeft:-15}}>
-                        <img src={require('./Images/facebook.png')} width={30} height={30} />
-                        <img className='ms-4' src={require('./Images/twitter (2).png')} width={30} height={30}/>
-                        <img className='ms-4' src={require('./Images/linkedin.png')} width={30} height={30}/>
-                        <img className='ms-4' src={require('./Images/instagram (1).png')} width={25} height={25}/>
-                        <img className='ms-3' src={require('./Images/youtube.png')} width={28} height={28} />
-                    </div>
-                </div><br/><br/>
-                <div className='row mt-3'>
-                        <div className='col-md-3'><p >License Agreement</p></div>
-                        <div className='col-md-3'><p >Privacy Policy</p></div>
-                        <div className='col-md-3'><p></p></div>
-                        <div className='col-md-3'><p >Copyright @ 2022 Bluelakes,Inc.All rights reserved.</p></div>
-                    </div>
-            </div>
+           <Footer/>
         </footer>
       </div>
     )
