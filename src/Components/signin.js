@@ -57,7 +57,6 @@ export default function signin() {
         },
         validationSchema,
 
-
         onSubmit: (values) => {
 
 
@@ -78,6 +77,9 @@ export default function signin() {
                           enqueueSnackbar("Welcome to Borrowers", {variant: "success",anchorOrigin:{ vertical: 'top',
                           horizontal: 'right'},autoHideDuration: 3000})
                           navigate('/myaccount');
+                    }else{
+                        enqueueSnackbar("Invalid Credentials", {variant: "error",anchorOrigin:{ vertical: 'top',
+                        horizontal: 'right'},autoHideDuration: 3000})
                     }
 
                 }
@@ -91,7 +93,7 @@ export default function signin() {
             <div className='row'>
                 <div className='col-md-4 dream'></div>
                 <div className='col-md-7 p-4 justify-content-end align-items-center' >
-                    <div align='end' style={{ marginRight: -10 }}> <Link to='/myaccount'><img src={require('./Images/home.png')} width={50} height={50} /></Link></div>
+                    <div align='end' style={{ marginRight: -10 }}> <Link ><img src={require('./Images/home.png')} width={50} height={50} /></Link></div>
                     <form className='p-1' onSubmit={formik.handleSubmit}>
                         <div className=' ps-5 pt-4 pb-5 '>
                             <span style={{ fontSize: 24, fontWeight: 600 }}>Signin</span>
@@ -111,7 +113,7 @@ export default function signin() {
                                 </div>
                             </div><br />
                             <p align='center' className='pt-3'>Or</p>
-                            <TextField id="standard-basic " label="Enter Your Username or Email " type='email' name='email' placeholder='Enter your Username Or Email' onChange={formik.handleChange} variant="standard" fullWidth  /><br />
+                            <TextField id="standard-basic " label="Enter Your Username or Email " type='email' name='email' placeholder='Enter your Username Or Email'  onBlur={formik.handleBlur}  onChange={formik.handleChange} variant="standard" fullWidth  /><br />
                             <p className='text-danger'>{formik.errors.email}</p><br/>
                             <FormControl  variant="standard" fullWidth >
                                     <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
@@ -120,6 +122,7 @@ export default function signin() {
                                         type={showPassword ? 'text' : 'password'}
                                         value={formik.values.password} 
                                         onChange={formik.handleChange} 
+                                        onBlur={formik.handleBlur} 
                                         name='password'
                                         endAdornment={
                                         <InputAdornment position="end">

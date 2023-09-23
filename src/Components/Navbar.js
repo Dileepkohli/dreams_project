@@ -75,7 +75,7 @@ export default function Navbar() {
                     <li class="nav-item ms-4"><Link to='/community' className='text-dark text-decoration-none'>COMMUNITY</Link></li>
                     <li class="nav-item ms-4"><Link to='/mydreams' className='text-dark text-decoration-none'>MY DREAMS</Link></li>
                     <li class="nav-item ms-3">
-                    <div style={{marginTop:-5,color:'black'}}>
+                    <div  style={{marginTop:-5,color:'black'}}>
                         <Button
                           // id="demo-customized-button"
                           aria-controls={open ? 'demo-customized-menu' : undefined}

@@ -11,6 +11,8 @@ import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import inspireService from '../services/inspireService';
 import { Modal, Button } from 'react-bootstrap';
+import { useSnackbar } from 'notistack';
+
 import Navbar from './Navbar';
 import Footer from './Footer';
 
@@ -19,13 +21,23 @@ export default function myinformation() {
     const [show, setShow] = useState(false);
     const [commentMessage, setcommentMessage] = useState("");
     const [isComment, setIsComment] = useState(false);
+    const[open,setOpen] = useState(false);
+    const [editblog,setEditblog] = useState({
+        edittitle:'',
+        editdescription:''
+    })
 
     useEffect(() => {
         getBlogs();
     }, []);
 
+    const { enqueueSnackbar } = useSnackbar();
+   
+
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const handleopen = () => setOpen(true);
+    const handleclose = () => setOpen(false);
     
     const handleMessageChange = (event) => {
         setcommentMessage(event.target.value);
@@ -45,6 +57,8 @@ export default function myinformation() {
 
                 }
             })
+
+            
         } 
 
     const addLike = (Id) => {
@@ -71,8 +85,6 @@ export default function myinformation() {
             if (response != undefined) {
                 console.log(response);
                 getBlogs();
-
-
             }
         })
     }
@@ -80,6 +92,7 @@ export default function myinformation() {
     const openComments = (id) => {
         console.log(id)
         const dataArr = [...blogData];
+
         let index = blogData.find((item, i) => {
             console.log(item.blogId, id);
             if (item.blogId === id) {
@@ -135,8 +148,9 @@ export default function myinformation() {
             blog: '',
             image: ''
         },
-        onSubmit: (values) => {
+        onSubmit: (values,{resetForm}) => {
             console.log(values)
+
             let dataObj = {
                 title: values.title,
                 description: values.blog,
@@ -146,14 +160,26 @@ export default function myinformation() {
                 if (response != undefined) {
                     console.log(response);
                     getBlogs();
-                    // if (response.data != undefined) {
-
-                    // }
-
+                    enqueueSnackbar("Blog Created", {variant: "success",anchorOrigin:{ vertical: 'top',
+                    horizontal: 'right'},autoHideDuration: 3000})
+                    // window.location.reload();
                 }
             })
+            resetForm();
         }
     })
+
+    const handleedit = () =>{
+        const Dataobj = [...editblog]
+        inspireService.Update("blog/update",Dataobj).then(response =>{
+            if (response != undefined) {
+                console.log(response);
+                getBlogs();
+                enqueueSnackbar("Blog updated", {variant: "success",anchorOrigin:{ vertical: 'top',
+                horizontal: 'right'},autoHideDuration: 3000})
+            }
+        })
+    }
 
     return (
         <div>
@@ -194,7 +220,7 @@ export default function myinformation() {
                             return <Paper className='m-4' key={index} elevation={16} style={{ width: 565, borderRadius: 20 }}>
                                 <header>
                                     <div className='d-flex p-2 pt-3' > 
-                                        <BiEdit className='icon30 ms-auto'/>
+                                        <BiEdit className='icon30 ms-auto' onClick={handleopen}/>
                                         <RiDeleteBin5Line className='icon31 ms-3'/>
                                     </div>
                                     <img className='pt-2' src={require('./Images/shopping_428604085_1000.jpg')} width={565} height={250} />
@@ -232,6 +258,31 @@ export default function myinformation() {
                                             </Button>
                                         </Modal.Footer>
                                     </Modal>
+
+                                    <Modal  show={open} size="lg" onHide={handleclose}>
+                                    <Modal.Header closeButton key="b3">
+                                        <Modal.Title>Edit blog</Modal.Title>
+                                    </Modal.Header>
+                                        <Modal.Body>
+                                        <form className='pt-1' onSubmit={handleedit}>
+                                            <div className='p-2' elevation={18}>
+                                                <TextField id="standard-basic" variant="standard" type='text' name='edittitle' label='Title of the Blog' value={editblog.edittitle}  onChange={(e)=>edittitle(e.target.value)}  fullWidth /><br/><br/><br/>
+                                                <div><input  className='textfield p-2'  type='text' name='editdescription' placeholder='Write here'    value={editblog.editdescription}  onChange={(e)=>editdescription(e.target.value)} fullWidth /></div><br /><br />
+                                                <TextField id="standard-basic" variant="standard" type='file' name='image'  fullWidth /><br /><br />
+                                                <p align='end '><button className='btn btn-primary mt-4' type='submit' style={{ width: 100, borderRadius: 20 }}>Submit</button></p>
+                                            </div>
+                                        </form>
+                                        </Modal.Body>
+                                        {/* <Modal.Footer key="b2">
+                                            <Button className="bl-btn2-ol" variant="secondary" onClick={handleclose}>
+                                            Close
+                                            </Button>
+                                            <button className="btn btn-outline-success" type="submit" id="submit" >
+                                            Submit
+                                            </button>
+                                        </Modal.Footer>  */}
+                                    </Modal>
+
                                 {item.isComment &&
                                     <div>
                                         <div className='p-5'>

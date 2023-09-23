@@ -48,7 +48,7 @@ export default function Changepwd() {
             .required('Password is required'),
         confirmnewPassword: yup
             .string()
-            .oneOf([yup.ref('password'),null], 'Passwords must match')
+            .oneOf([yup.ref('newpassword'),null], 'Passwords must match')
             .required('Confirm Password is required'),
     })
 
@@ -65,7 +65,7 @@ export default function Changepwd() {
           if (values.newpassword === values.confirmnewPassword) {
             var dataObj = {
               previouspwd:values.previouspwd,
-              password: values.newpassword,
+              newpassword: values.newpassword,
               confirmnewPassword: values.confirmnewPassword
             }
             console.log(dataObj);
@@ -76,6 +76,9 @@ export default function Changepwd() {
                     enqueueSnackbar("password changed", {variant: "success",anchorOrigin:{ vertical: 'top',
                     horizontal: 'right'},autoHideDuration: 3000})
                   navigate('/myaccount');
+                }else{
+                  enqueueSnackbar("invalid", {variant: "error",anchorOrigin:{ vertical: 'top',
+                  horizontal: 'right'},autoHideDuration: 3000})
                 }
     
               }
@@ -180,3 +183,4 @@ export default function Changepwd() {
     </div>
   )
 }
+

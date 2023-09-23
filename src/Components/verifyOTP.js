@@ -32,7 +32,7 @@ export default function signin() {
           
           <div className='col-md-7  col-md-6 col-12 p-4 justify-content-end align-items-center'>
            
-          <div align='end' style={{marginRight:30}}> <Link to='/myaccount'><img src={require('./Images/home.png')} width={50} height={50}/></Link></div>
+          <div align='end' style={{marginRight:30}}> <Link ><img src={require('./Images/home.png')} width={50} height={50}/></Link></div>
                     <form className='p-3' onSubmit={handleSubmit} >
                         <div className=' ps-5 pt-5 pb-5 '>
                             <span style={{fontSize:24,fontWeight:600}}>OTP Verification? </span><br/><br/>

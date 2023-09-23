@@ -126,7 +126,7 @@ export default function signup() {
                 <div className='col-lg-4 dream'></div>
                 {isRegister &&
                     <div className='col-lg-7  col-md-6 col-12 p-4 justify-content-end align-items-center'>
-                        <div align='end' style={{ marginRight: -10 }}> <Link to='/myaccount'><img src={require('./Images/home.png')} width={50} height={50} /></Link></div>
+                        <div align='end' style={{ marginRight: -10 }}> <Link ><img src={require('./Images/home.png')} width={50} height={50} /></Link></div>
                         <form className='p-3' onSubmit={formik.handleSubmit} style={{ marginTop: -20 }}>
                             <div className=' ps-5 pt-4 pb-5 '>
                                 <span style={{ fontSize: 24, fontWeight: 600 }}>Signup</span>

@@ -21,6 +21,7 @@ export default class myinformation extends Component {
         }
     }
 
+  
     showModel = (e) => {
         this.setState({
             show: !this.state.show
